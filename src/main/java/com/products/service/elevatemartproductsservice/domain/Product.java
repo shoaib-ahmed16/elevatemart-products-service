@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.nio.file.Path;
 import java.util.List;
 
 @Data
@@ -26,6 +27,7 @@ public class Product {
     private String Type;
     private Boolean isTaxable;
 
+    private String imageUrl;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "product_tax",
             joinColumns = @JoinColumn(name = "product_id"),
