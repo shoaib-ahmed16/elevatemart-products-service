@@ -7,14 +7,14 @@ import org.modelmapper.ModelMapper;
 
 @Slf4j
 public class ProductMapper {
-    private static String productEntityObj=" Product Entity Object";
-    private static String productDtoObj="Product Dto Object";
+    private static final String productEntityObj=" Product Entity Object";
+    private static final String productDtoObj="Product Dto Object";
     private static final ModelMapper modelMapper = new ModelMapper();
-    public ProductDto convertToDto(Product product) {
+    public static ProductDto convertToDto(Product product) {
         log.info("Utilizing ModelMapper to convert :{} into :{}.",productEntityObj,productDtoObj);
         return modelMapper.map(product, ProductDto.class);
     }
-    public Product convertToEntity(ProductDto productDto) {
+    public static Product convertToEntity(ProductDto productDto) {
         log.info("Utilizing ModelMapper to convert :{} into :{}",productDtoObj,productEntityObj);
         return modelMapper.map(productDto, Product.class);
     }
