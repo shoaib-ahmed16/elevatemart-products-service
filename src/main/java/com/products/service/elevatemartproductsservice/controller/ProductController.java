@@ -2,6 +2,7 @@ package com.products.service.elevatemartproductsservice.controller;
 
 import com.products.service.elevatemartproductsservice.domain.Product;
 import com.products.service.elevatemartproductsservice.dto.ProductImpFieldDto;
+import com.products.service.elevatemartproductsservice.dto.SearchFilter;
 import com.products.service.elevatemartproductsservice.exception.ProductNullObjectException;
 import com.products.service.elevatemartproductsservice.services.FileStorageService;
 import com.products.service.elevatemartproductsservice.services.ProductService;
@@ -96,6 +97,19 @@ public class ProductController {
             throw new ProductNullObjectException("ProductImpFieldDto updating");
         }
         return new RequestSuccess(Operation.PRODUCTFOUNDBYSKU.getMessage(),Operation.PRODUCTFOUNDBYSKU.getOperation(),Operation.PRODUCTFOUNDBYSKU.getStatusCode(),productService.getProductBySku(productSku));
+    }
+    @GetMapping("/productList/searchFilter")
+    public RequestSuccess getProductListBySearchCriteria(@RequestBody SearchFilter searchFilter){
+        log.info("Initiating Product List retrieval by searchFilter: {}", searchFilter);
+        if(Objects.isNull(searchFilter) && Objects.isNull(searchFilter.getFilterGroup())
+                && Objects.isNull(searchFilter.getFilterGroup().getFilterFieldsList())
+                && searchFilter.getFilterGroup().getFilterFieldsList().size()==0
+        ){
+            log.error("Received an empty or null value for 'searchFilter or it's internal Object Body' :{}. Unable to proceed with this request.",searchFilter);
+            throw new ProductNullObjectException("ProductImpFieldDto updating");
+        }
+        return new RequestSuccess(Operation.PRODUCTLISTBYSEARCHFILTER.getMessage(),Operation.PRODUCTLISTBYSEARCHFILTER.getOperation(),Operation.PRODUCTLISTBYSEARCHFILTER.getStatusCode(),productService.getProductListBySearchFilter(searchFilter),searchFilter);
+
     }
 
     @DeleteMapping("/delete")

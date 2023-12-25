@@ -2,10 +2,12 @@ package com.products.service.elevatemartproductsservice.services.impl;
 
 import com.products.service.elevatemartproductsservice.domain.Product;
 import com.products.service.elevatemartproductsservice.dto.ProductDto;
+import com.products.service.elevatemartproductsservice.dto.SearchFilter;
 import com.products.service.elevatemartproductsservice.dto.mappers.ProductMapper;
 import com.products.service.elevatemartproductsservice.exception.ProductNotFoundException;
 import com.products.service.elevatemartproductsservice.exception.ProductUnknownServerErrorException;
 import com.products.service.elevatemartproductsservice.repository.ProductRepository;
+import com.products.service.elevatemartproductsservice.repository.customize.ProductRepositoryCustom;
 import com.products.service.elevatemartproductsservice.services.ProductService;
 import com.products.service.elevatemartproductsservice.utils.ProductErrorMessages;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -20,6 +23,9 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepo;
+
+    @Autowired
+    private ProductRepositoryCustom productRepositoryCustom;
     @Override
     public void createProduct(Product product) {
         try{
@@ -138,5 +144,10 @@ public class ProductServiceImpl implements ProductService {
             log.error(ProductErrorMessages.UNKNOWNERROR.getMessage());
             throw new ProductUnknownServerErrorException(ProductErrorMessages.UNKNOWNERROR.getMessage());
         }
+    }
+
+    @Override
+    public List<ProductDto> getProductListBySearchFilter(SearchFilter searchFilter) {
+        return productRepositoryCustom.findProductBySearchCriteria(searchFilter);
     }
 }
