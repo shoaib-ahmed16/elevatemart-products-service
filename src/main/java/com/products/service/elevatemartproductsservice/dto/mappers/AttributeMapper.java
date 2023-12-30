@@ -1,9 +1,7 @@
 package com.products.service.elevatemartproductsservice.dto.mappers;
 
 import com.products.service.elevatemartproductsservice.domain.Attribute;
-import com.products.service.elevatemartproductsservice.domain.Product;
 import com.products.service.elevatemartproductsservice.dto.AttributeDto;
-import com.products.service.elevatemartproductsservice.dto.ProductDto;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 

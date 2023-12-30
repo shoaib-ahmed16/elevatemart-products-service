@@ -2,7 +2,6 @@ package com.products.service.elevatemartproductsservice.dto;
 
 import com.products.service.elevatemartproductsservice.domain.Group;
 import com.products.service.elevatemartproductsservice.domain.Tax;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
