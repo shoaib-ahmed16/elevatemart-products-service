@@ -6,12 +6,11 @@ import com.products.service.elevatemartproductsservice.dto.SearchFilter;
 import com.products.service.elevatemartproductsservice.exception.ProductNullObjectException;
 import com.products.service.elevatemartproductsservice.services.FileStorageService;
 import com.products.service.elevatemartproductsservice.services.ProductService;
-import com.products.service.elevatemartproductsservice.utils.ProductOperation;
+import com.products.service.elevatemartproductsservice.utils.Operation;
 import com.products.service.elevatemartproductsservice.utils.ResponseSuccess;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,17 +43,17 @@ public class ProductController {
             throw new ProductNullObjectException("Product Creation");
         }
         productService.createProduct(product);
-        return new ResponseSuccess(ProductOperation.SAVED.getMessage(), ProductOperation.SAVED.getOperation(), ProductOperation.SAVED.getStatusCode());
+        return new ResponseSuccess(Operation.SAVED.getMessage(), Operation.PRODUCT.getType()+Operation.SAVED.getOperation(),Operation.SAVED.getStatusCode());
     }
     @PostMapping("/update")
-    public ResponseSuccess updateProduct(@RequestBody Product product, @RequestParam("sku") String sku){
+    public ResponseSuccess updateProduct(@RequestBody Product product, @RequestParam String sku){
         log.info("Received a Product Updating Request Call. Initiating Product Creation Process. :{}",product);
         if(Objects.isNull(product)){
             log.error("Failed to process product update: Received an empty Product object. Unable to proceed. Product: {}", product);
             throw new ProductNullObjectException("Product Updating");
         }
         productService.updateProduct(product,sku);
-        return new ResponseSuccess(ProductOperation.UPDATE.getMessage(), ProductOperation.UPDATE.getOperation(), ProductOperation.UPDATE.getStatusCode());
+        return new ResponseSuccess(Operation.UPDATE.getMessage(), Operation.PRODUCT.getType()+Operation.UPDATE.getOperation(), Operation.UPDATE.getStatusCode());
     }
 
     @PutMapping("/updateSku")
@@ -65,7 +64,7 @@ public class ProductController {
             throw new ProductNullObjectException("ProductImpFieldDto updating");
         }
         productService.updateProductSku(prodFields.getProductId(), prodFields.getSku());
-        return new ResponseSuccess(ProductOperation.SKUUPDATE.getMessage()+prodFields.getProductId(), ProductOperation.SKUUPDATE.getOperation(), ProductOperation.SKUUPDATE.getStatusCode());
+        return new ResponseSuccess(Operation.SKUUPDATE.getMessage()+prodFields.getProductId(), Operation.SKUUPDATE.getOperation(), Operation.SKUUPDATE.getStatusCode());
     }
 
     @PutMapping("/updateQuantities")
@@ -76,7 +75,7 @@ public class ProductController {
             throw new ProductNullObjectException("ProductImpFieldDto updating");
         }
         productService.updateProductQuantities(prodFields.getSku(),prodFields.getQuantities());
-        return new ResponseSuccess(ProductOperation.QUANTITIESUPDATE.getMessage()+prodFields.getSku(), ProductOperation.QUANTITIESUPDATE.getOperation(), ProductOperation.QUANTITIESUPDATE.getStatusCode());
+        return new ResponseSuccess(Operation.QUANTITIESUPDATE.getMessage()+prodFields.getSku(), Operation.QUANTITIESUPDATE.getOperation(), Operation.QUANTITIESUPDATE.getStatusCode());
     }
 
     @PutMapping("/updateImageUrl")
@@ -87,16 +86,16 @@ public class ProductController {
             throw new ProductNullObjectException("ProductImpFieldDto updating");
         }
         productService.updateProductUrl(prodFields.getSku(),prodFields.getFile());
-        return new ResponseSuccess(ProductOperation.IMAGEUPDATE.getMessage()+prodFields.getSku(), ProductOperation.IMAGEUPDATE.getOperation(), ProductOperation.IMAGEUPDATE.getStatusCode());
+        return new ResponseSuccess(Operation.IMAGEUPDATE.getMessage()+prodFields.getSku(), Operation.IMAGEUPDATE.getOperation(), Operation.IMAGEUPDATE.getStatusCode());
     }
     @GetMapping("/productBySku")
-    public ResponseSuccess getProductById(@RequestParam String productSku){
+    public ResponseSuccess getProductById(@RequestParam("sku") String productSku){
         log.info("Initiating Product retrieval by SKU: {}", productSku);
-        if(Objects.isNull(productSku)|| productSku.equals("")){
+        if(Objects.isNull(productSku)|| productSku.trim().equals("")){
             log.error("Received an empty or null value for 'productSku' :{}. Unable to proceed with this request.",productSku);
             throw new ProductNullObjectException("ProductImpFieldDto updating");
         }
-        return new ResponseSuccess(ProductOperation.FOUNDBYSKU.getMessage(), ProductOperation.FOUNDBYSKU.getOperation(), ProductOperation.FOUNDBYSKU.getStatusCode(),productService.getProductBySku(productSku));
+        return new ResponseSuccess(Operation.FOUNDBYSKU.getMessage(), Operation.FOUNDBYSKU.getOperation(), Operation.FOUNDBYSKU.getStatusCode(),productService.getProductBySku(productSku));
     }
     @GetMapping("/productList/searchFilter")
     public ResponseSuccess getProductListBySearchCriteria(@RequestBody SearchFilter searchFilter){
@@ -108,19 +107,19 @@ public class ProductController {
             log.error("Received an empty or null value for 'searchFilter or it's internal Object Body' :{}. Unable to proceed with this request.",searchFilter);
             throw new ProductNullObjectException("ProductImpFieldDto updating");
         }
-        return new ResponseSuccess(ProductOperation.LISTBYSEARCHFILTER.getMessage(), ProductOperation.LISTBYSEARCHFILTER.getOperation(), ProductOperation.LISTBYSEARCHFILTER.getStatusCode(),productService.getProductListBySearchFilter(searchFilter),searchFilter);
+        return new ResponseSuccess(Operation.LISTBYSEARCHFILTER.getMessage(), Operation.LISTBYSEARCHFILTER.getOperation(), Operation.LISTBYSEARCHFILTER.getStatusCode(),productService.getProductListBySearchFilter(searchFilter),searchFilter);
 
     }
 
     @DeleteMapping("/delete")
-    public ResponseSuccess deleteProduct(@RequestParam Long productId){
+    public ResponseSuccess deleteProduct(@RequestParam("id") Long productId){
         log.info("Received a Request Call to delete Product. Initiating Product Sku updation Process. :{}",productId);
-        if(ObjectUtils.isEmpty(productId) || productId==0){
+        if(productId==0){
             log.error("Failed to proceed with the request. ProductId not received: {}", productId);
             throw new ProductNullObjectException("Not Received any Product Id for deleting the Product. ");
         }
         productService.deleteProduct(productId);
-        return new ResponseSuccess(ProductOperation.DELETE.getMessage()+productId, ProductOperation.DELETE.getOperation(), ProductOperation.DELETE.getStatusCode());
+        return new ResponseSuccess(Operation.DELETEBYID.getMessage(), Operation.PRODUCT.getType()+Operation.DELETEBYID.getOperation(), Operation.DELETEBYID.getStatusCode());
 
     }
 }
