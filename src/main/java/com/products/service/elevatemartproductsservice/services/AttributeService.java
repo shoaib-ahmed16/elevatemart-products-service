@@ -5,7 +5,7 @@ import com.products.service.elevatemartproductsservice.dto.AttributeDto;
 
 import java.util.List;
 
-public sealed interface AttributeService permits AttributeServiceImpl {
+public sealed interface AttributeService permits AttributeServiceImpl  {
 
     void createAttribute(Attribute attribute);
     void updateAttribute(Attribute attribute,Long attributeId);

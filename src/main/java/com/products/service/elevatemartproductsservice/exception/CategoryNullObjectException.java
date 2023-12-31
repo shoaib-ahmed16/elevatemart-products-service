@@ -3,9 +3,9 @@ package com.products.service.elevatemartproductsservice.exception;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class GroupNullObjectException extends  RuntimeException{
+public class CategoryNullObjectException extends  RuntimeException{
     private static String message =" Group Cannot be Null!!!";
-    public  GroupNullObjectException(String addOn){
+    public CategoryNullObjectException(String addOn){
         super(message+addOn);
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GroupDto {
+public class CategoryDto {
 
     private Long groupId;
 

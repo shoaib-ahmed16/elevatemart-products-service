@@ -13,19 +13,20 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Builder
-public class Group {
+@Table(name = "categories")
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "group_id")
-    private Long groupId;
+    @Column(name = "category_id")
+    private Long categoryId;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "group_attribute",
-            joinColumns = @JoinColumn(name = "group_id"),
+    @JoinTable(name = "category_attribute",
+            joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name = "attribute_id"))
     private List<Attribute> attributeList;
 
-    @ManyToMany(mappedBy = "groupList", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "categoryList", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Product> productList;
     private Boolean isActive;
 

@@ -1,26 +1,20 @@
 package com.products.service.elevatemartproductsservice.repository.customize.impl;
 
-import com.products.service.elevatemartproductsservice.domain.Group;
-import com.products.service.elevatemartproductsservice.domain.Product;
-import com.products.service.elevatemartproductsservice.domain.enums.ProductVariables;
-import com.products.service.elevatemartproductsservice.dto.Filters;
 import com.products.service.elevatemartproductsservice.dto.ProductDto;
 import com.products.service.elevatemartproductsservice.dto.SearchFilter;
-import com.products.service.elevatemartproductsservice.dto.mappers.ProductMapper;
 import com.products.service.elevatemartproductsservice.repository.customize.ProductRepositoryCustom;
-import jakarta.persistence.criteria.*;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+//@Repository
 public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
-
-    private SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+    @Override
+    public List<ProductDto> findProductBySearchCriteria(SearchFilter searchFilter) {
+        return null;
+    }
+    /*
+    @Autowired
+    private SessionFactory sessionFactory;
     @Override
     public List<ProductDto> findProductBySearchCriteria(SearchFilter searchFilter) {
         try (Session session = sessionFactory.openSession()) {
@@ -43,7 +37,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                     predicates.add(builder.equal(root.get(ProductVariables.PRICE.getValue()), (Double) filterValue));
                 }
                 else if("groupList.name".equals(filter.getFilterField())){
-                    Join<Product, Group> groupJoin = root.join("groupList");
+                    Join<Product, Category> groupJoin = root.join("categoryList");
                     Predicate nameCondition = builder.equal(groupJoin.get("name"), filter.getFilterValue());
                     finalCondition = builder.and(finalCondition, nameCondition);
 
@@ -63,4 +57,6 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
             throw new RuntimeException();
         }
     }
+
+     */
 }

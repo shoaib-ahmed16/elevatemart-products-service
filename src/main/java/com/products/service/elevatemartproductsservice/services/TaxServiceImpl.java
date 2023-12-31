@@ -4,12 +4,12 @@ package com.products.service.elevatemartproductsservice.services;
 import com.products.service.elevatemartproductsservice.domain.Tax;
 import com.products.service.elevatemartproductsservice.dto.TaxDto;
 import com.products.service.elevatemartproductsservice.dto.mappers.TaxMapper;
-import com.products.service.elevatemartproductsservice.exception.GroupNotFoundException;
+import com.products.service.elevatemartproductsservice.exception.CategoryNotFoundException;
 import com.products.service.elevatemartproductsservice.exception.TaxNotFoundException;
 import com.products.service.elevatemartproductsservice.exception.TaxUnknownServerErrorException;
 import com.products.service.elevatemartproductsservice.repository.TaxRepository;
 import com.products.service.elevatemartproductsservice.utils.AttributeErrorMessages;
-import com.products.service.elevatemartproductsservice.utils.GroupErrorMessages;
+import com.products.service.elevatemartproductsservice.utils.CategoryErrorMessages;
 import com.products.service.elevatemartproductsservice.utils.TaxErrorMessages;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,7 +105,7 @@ public final class TaxServiceImpl implements TaxService {
             Tax tax= taxRepo.findById(taxId)
                     .orElseThrow(()->{
                         log.error(TaxErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
-                        throw new TaxNotFoundException(GroupErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
+                        throw new TaxNotFoundException(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
                     });
             log.info("Successfully fetch Tax details for Tax ID: {}", taxId);
             log.info("Tax Record found for the Tax Id : {}. Returning the Tax Object : {}",taxId,tax);
@@ -147,8 +147,8 @@ public final class TaxServiceImpl implements TaxService {
         try{
             log.info("Initialize the  process of fetching Tax Details by Tax Id: {}",taxId);
             Tax tax= taxRepo.findById(taxId).orElseThrow(()->{
-                log.error(GroupErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
-                throw new GroupNotFoundException(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+taxId+". Please provide the correct Group Id to Delete the Group.");
+                log.error(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
+                throw new CategoryNotFoundException(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+taxId+". Please provide the correct Group Id to Delete the Group.");
             });
             log.info("Successfully fetched Tax details for Tax ID: {}", taxId);
             log.info("Group Record found for the Tax Id : {}. Deleting the Tax Object : {}",taxId,tax);

@@ -5,7 +5,7 @@ import com.products.service.elevatemartproductsservice.dto.TaxDto;
 
 import java.util.List;
 
-public sealed interface TaxService permits TaxServiceImpl {
+public sealed   interface TaxService permits TaxServiceImpl  {
     void create(Tax tax);
     void updateTaxPercentage(Long taxId, Double percentage);
     void updateTaxCode(Long taxId, String code);

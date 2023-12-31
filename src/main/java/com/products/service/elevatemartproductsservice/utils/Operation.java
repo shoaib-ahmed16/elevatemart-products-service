@@ -2,7 +2,7 @@ package com.products.service.elevatemartproductsservice.utils;
 
 public enum Operation {
     PRODUCT("product"),
-    GROUP("group"),
+    CATEGORY("category"),
     ATTRIBUTE("attribute"),
     TAX("tax"),
     QUANTITIESUPDATE("product-quantities-update",200,"Product quantities is updated  Successfully of Product sku: "),

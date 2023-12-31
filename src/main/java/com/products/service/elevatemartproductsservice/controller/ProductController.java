@@ -2,7 +2,6 @@ package com.products.service.elevatemartproductsservice.controller;
 
 import com.products.service.elevatemartproductsservice.domain.Product;
 import com.products.service.elevatemartproductsservice.dto.ProductImpFieldDto;
-import com.products.service.elevatemartproductsservice.dto.SearchFilter;
 import com.products.service.elevatemartproductsservice.exception.ProductNullObjectException;
 import com.products.service.elevatemartproductsservice.services.FileStorageService;
 import com.products.service.elevatemartproductsservice.services.ProductService;
@@ -97,6 +96,7 @@ public class ProductController {
         }
         return new ResponseSuccess(Operation.FOUNDBYSKU.getMessage(), Operation.FOUNDBYSKU.getOperation(), Operation.FOUNDBYSKU.getStatusCode(),productService.getProductBySku(productSku));
     }
+    /*
     @GetMapping("/productList/searchFilter")
     public ResponseSuccess getProductListBySearchCriteria(@RequestBody SearchFilter searchFilter){
         log.info("Initiating Product List retrieval by searchFilter: {}", searchFilter);
@@ -110,7 +110,7 @@ public class ProductController {
         return new ResponseSuccess(Operation.LISTBYSEARCHFILTER.getMessage(), Operation.LISTBYSEARCHFILTER.getOperation(), Operation.LISTBYSEARCHFILTER.getStatusCode(),productService.getProductListBySearchFilter(searchFilter),searchFilter);
 
     }
-
+    */
     @DeleteMapping("/delete")
     public ResponseSuccess deleteProduct(@RequestParam("id") Long productId){
         log.info("Received a Request Call to delete Product. Initiating Product Sku updation Process. :{}",productId);

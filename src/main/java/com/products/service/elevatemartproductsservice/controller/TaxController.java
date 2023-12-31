@@ -1,7 +1,7 @@
 package com.products.service.elevatemartproductsservice.controller;
 
 import com.products.service.elevatemartproductsservice.domain.Tax;
-import com.products.service.elevatemartproductsservice.exception.GroupNullObjectException;
+import com.products.service.elevatemartproductsservice.exception.CategoryNullObjectException;
 import com.products.service.elevatemartproductsservice.exception.TaxNullObjectException;
 import com.products.service.elevatemartproductsservice.services.TaxService;
 import com.products.service.elevatemartproductsservice.utils.Operation;
@@ -70,7 +70,7 @@ public class TaxController {
         log.info("Received a Tax Detail Fetch By Id  Request Call. Initiating Tax Fetching Process for  Group Id:{}",taxId);
         if(taxId==0){
             log.error("Failed to process request: Received an invalid Tax Id :{}.",taxId);
-            throw new GroupNullObjectException("Tax Details Fetch By Id:"+taxId);
+            throw new CategoryNullObjectException("Tax Details Fetch By Id:"+taxId);
         }
         return  new ResponseSuccess(Operation.FETCHBYID.getMessage(),Operation.TAX.getType()+Operation.FETCHBYID.getOperation(),Operation.FETCHBYID.getStatusCode(),taxService.getTaxById(taxId));
     }

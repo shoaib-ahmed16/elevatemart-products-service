@@ -34,10 +34,10 @@ public class Product {
     private List<Tax> taxList;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "product_group",
+    @JoinTable(name = "product_category",
             joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "group_id"))
-    private List<Group> groupList;
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private List<Category> categoryList;
     private Long quantities;
     private Long thresholdQuantities;
     private Boolean isActive;

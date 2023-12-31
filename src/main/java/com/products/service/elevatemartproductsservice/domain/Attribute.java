@@ -24,6 +24,6 @@ public class Attribute {
     private Boolean active;
 
     @ManyToMany(mappedBy = "attributeList", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Group> groupList;
+    private List<Category> groupList;
 
 }

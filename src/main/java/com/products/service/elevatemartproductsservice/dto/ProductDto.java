@@ -1,6 +1,6 @@
 package com.products.service.elevatemartproductsservice.dto;
 
-import com.products.service.elevatemartproductsservice.domain.Group;
+import com.products.service.elevatemartproductsservice.domain.Category;
 import com.products.service.elevatemartproductsservice.domain.Tax;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +21,7 @@ public class ProductDto {
     private Boolean isTaxable;
     private String imageUrl;
     private List<Tax> taxList;
-    private List<Group> groupList;
+    private List<Category> groupList;
     private Long quantities;
     private Long thresholdQuantities;
     private Boolean isActive;
