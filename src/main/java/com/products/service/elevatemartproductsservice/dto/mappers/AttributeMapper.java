@@ -8,7 +8,7 @@ import org.modelmapper.ModelMapper;
 @Slf4j
 public class AttributeMapper {
 
-    private static final String attributeEntityObj=" Attribute Entity Object";
+    private static final String attributeEntityObj="Attribute Entity Object";
     private static final String attributeDtoObj="Attribute Dto Object";
     private static final ModelMapper modelMapper = new ModelMapper();
     public static AttributeDto convertToDto(Attribute attribute) {

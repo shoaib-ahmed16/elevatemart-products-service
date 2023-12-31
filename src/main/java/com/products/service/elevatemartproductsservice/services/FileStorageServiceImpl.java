@@ -1,7 +1,6 @@
-package com.products.service.elevatemartproductsservice.services.impl;
+package com.products.service.elevatemartproductsservice.services;
 
 import com.products.service.elevatemartproductsservice.config.FileStorageConfig;
-import com.products.service.elevatemartproductsservice.services.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -14,7 +13,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 @Service
-public class FileStorageServiceImpl implements FileStorageService {
+public final class FileStorageServiceImpl implements FileStorageService {
 
     @Autowired(required=true)
     private FileStorageConfig fileStorageConfig;

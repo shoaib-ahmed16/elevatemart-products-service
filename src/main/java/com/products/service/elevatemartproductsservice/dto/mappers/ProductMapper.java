@@ -7,7 +7,7 @@ import org.modelmapper.ModelMapper;
 
 @Slf4j
 public class ProductMapper {
-    private static final String productEntityObj=" Product Entity Object";
+    private static final String productEntityObj="Product Entity Object";
     private static final String productDtoObj="Product Dto Object";
     private static final ModelMapper modelMapper = new ModelMapper();
     public static ProductDto convertToDto(Product product) {

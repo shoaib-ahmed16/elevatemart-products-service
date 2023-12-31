@@ -1,4 +1,4 @@
 package com.products.service.elevatemartproductsservice.services;
 
-public interface InventoryService {
+public sealed interface InventoryService permits InventoryServiceImpl {
 }

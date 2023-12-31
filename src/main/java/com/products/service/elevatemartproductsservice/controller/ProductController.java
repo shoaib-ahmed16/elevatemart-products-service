@@ -47,13 +47,13 @@ public class ProductController {
         return new ResponseSuccess(ProductOperation.SAVED.getMessage(), ProductOperation.SAVED.getOperation(), ProductOperation.SAVED.getStatusCode());
     }
     @PostMapping("/update")
-    public ResponseSuccess updateProduct(@RequestBody Product product){
+    public ResponseSuccess updateProduct(@RequestBody Product product, @RequestParam("sku") String sku){
         log.info("Received a Product Updating Request Call. Initiating Product Creation Process. :{}",product);
         if(Objects.isNull(product)){
             log.error("Failed to process product update: Received an empty Product object. Unable to proceed. Product: {}", product);
             throw new ProductNullObjectException("Product Updating");
         }
-        productService.updateProduct(product);
+        productService.updateProduct(product,sku);
         return new ResponseSuccess(ProductOperation.UPDATE.getMessage(), ProductOperation.UPDATE.getOperation(), ProductOperation.UPDATE.getStatusCode());
     }
 

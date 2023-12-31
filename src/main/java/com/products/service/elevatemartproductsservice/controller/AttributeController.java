@@ -31,13 +31,13 @@ public class AttributeController {
     }
 
     @PostMapping("/update")
-    public ResponseSuccess updateAttribute(@RequestBody Attribute attribute){
+    public ResponseSuccess updateAttribute(@RequestBody Attribute attribute,@RequestParam("attibuteId") Long attributeId){
         log.info("Received a Attribute fields Updation Request Call. Initiating Attribute Updating Process. :{}",attribute);
         if(Objects.isNull(attribute)){
             log.error("Failed to process request: Received an empty Attribute creation Object - {}", attribute);
             throw new AttributeNullObjectException("Attribute Updation");
         }
-        attributeService.updateAttribute(attribute);
+        attributeService.updateAttribute(attribute,attributeId);
         return  new ResponseSuccess(AttributeOperation.UPDATE.getMessage(),AttributeOperation.UPDATE.getOperation(),AttributeOperation.UPDATE.getStatusCode());
     }
 

@@ -7,9 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-public interface ProductService {
+public sealed interface ProductService permits ProductServiceImpl {
     void createProduct(Product product);
-    void updateProduct(Product product);
+    void updateProduct(Product product, String sku);
     void deleteProduct(Long productId);
     void updateProductSku(Long productId, String updatedSku);
     void updateProductQuantities(String sku, Long quantities);
