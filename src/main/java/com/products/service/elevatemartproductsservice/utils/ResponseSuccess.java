@@ -17,7 +17,9 @@ public class ResponseSuccess<T> {
     private T responseDto;
     private List<T> responseList;
     private SearchFilter searchFilter;
-
+    public ResponseSuccess(T responseDto){
+        this.responseDto =responseDto;
+    }
     public ResponseSuccess(String message, String operation, Integer statusCode){
         this.message=message;
         this.operation=operation;

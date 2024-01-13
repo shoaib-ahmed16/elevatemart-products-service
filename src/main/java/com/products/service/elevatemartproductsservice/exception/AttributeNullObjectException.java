@@ -4,7 +4,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class AttributeNullObjectException extends RuntimeException {
-    private static String message =" Attribute Cannot be Null!!!";
+    private static String message =" Attribute Object Cannot be Null!!!";
     public AttributeNullObjectException(String addone){
         super(addone+message);
     }

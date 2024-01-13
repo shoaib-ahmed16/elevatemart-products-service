@@ -30,7 +30,7 @@ public enum Operation {
     private String message;
 
     public String getOperation(){
-       return this.type+this.operation;
+       return this.operation;
     }
     public String getMessage(){
         return this.message;
@@ -45,8 +45,8 @@ public enum Operation {
         this.type=type;
     }
     Operation(String operation,Integer statusCode,String message){
-        this.message=message;
-        this.statusCode=statusCode;
         this.operation=operation;
+        this.statusCode=statusCode;
+        this.message=message;
     }
 }

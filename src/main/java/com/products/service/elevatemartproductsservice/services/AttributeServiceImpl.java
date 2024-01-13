@@ -38,18 +38,16 @@ public final class AttributeServiceImpl implements AttributeService {
     @Override
     public void updateAttribute(Attribute attribute,Long attributeId) {
         log.info("Initialize the  process of updating Attribute.");
+        Attribute attr= attributeRepo.findById(attributeId).orElseThrow(()->{
+            log.error(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+attribute.getAttributeId());
+            throw new AttributeNotFoundException(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+attributeId);
+        });
         try{
-            Optional<Attribute> attr= attributeRepo.findById(attributeId);
-            if(attr.isEmpty()){
-                 log.error(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+attribute.getAttributeId());
-                 throw new AttributeNotFoundException(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+attribute.getAttributeId());
-            }
-            Attribute attributeToUpdate= attr.get();
-            attributeToUpdate.setType(attribute.getType());
-            attributeToUpdate.setName(attribute.getName());
-            attributeToUpdate.setValue(attribute.getValue());
-            attributeRepo.save(attributeToUpdate);
-            log.info("Attribute fields is successfully updated and saved in the database :{}",attributeToUpdate);
+            attr.setType(attribute.getType());
+            attr.setName(attribute.getName());
+            attr.setValue(attribute.getValue());
+            attributeRepo.save(attr);
+            log.info("Attribute fields is successfully updated and saved in the database :{}",attr);
         }
         catch (Exception exc){
             log.error(AttributeErrorMessages.UNKNOWNERROR.getMessage());
@@ -59,19 +57,17 @@ public final class AttributeServiceImpl implements AttributeService {
 
     @Override
     public void updateAttributeActiveStatus(Long attributeId, Boolean status) {
-        log.info("Initialize the  process of updating Attribute Status.");
+        log.info("Initialize the  process of fetching Attribute Details by Attribute Id: {}",attributeId);
+        Attribute attr= attributeRepo.findById(attributeId).orElseThrow(()->{
+            log.error(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+attributeId);
+            throw new AttributeNotFoundException(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+attributeId);
+        });
+        log.info("Successfully fetched Attribute details for Attribute ID: {}", attributeId);
         try{
-            log.info("Initialize the  process of fetching Attribute Details by Attribute Id: {}",attributeId);
-            Optional<Attribute> attr= attributeRepo.findById(attributeId);
-            log.info("Successfully fetched Attribute details for Attribute ID: {}", attributeId);
-            if(attr.isEmpty()){
-                log.error(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+attributeId);
-                throw new AttributeNotFoundException(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+attributeId);
-            }
-            Attribute attributeStatusUpdate= attr.get();
-            attributeStatusUpdate.setActive(status);
-            attributeRepo.save(attributeStatusUpdate);
-            log.info("Attribute status field is successfully updated from :{} to : {} and saved in the database",attr.get().getActive(),status);
+            log.info("Initialize the  process of updating Attribute Status from :{} to : {}",attr.isActive(),status);
+            attr.setActive(status);
+            attributeRepo.save(attr);
+            log.info("Attribute status field is successfully updated to : {} and saved in the database",status);
         }
         catch (Exception exc){
             log.error(AttributeErrorMessages.UNKNOWNERROR.getMessage());
@@ -81,33 +77,26 @@ public final class AttributeServiceImpl implements AttributeService {
 
     @Override
     public AttributeDto getAttribute(Long attributeId) {
-        try{
             log.info("Initialize the  process of fetching Attribute Details by Attribute Id: {}",attributeId);
-            Optional<Attribute> attr= attributeRepo.findById(attributeId);
-            if(attr.isEmpty()){
+            Attribute attr= attributeRepo.findById(attributeId).orElseThrow(()->{
                 log.error(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+attributeId);
                 throw new AttributeNotFoundException(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+attributeId);
-            }
+            });
             log.info("Successfully fetched Attribute details for Attribute ID: {}", attributeId);
-            log.info("Attribute Record found for the Attribute Id : {}. Returning the Attribute Object : {}",attributeId,attr.get());
-            return AttributeMapper.convertToDto(attr.get());
-        }
-        catch (Exception exc){
-            log.error(AttributeErrorMessages.UNKNOWNERROR.getMessage());
-            throw new AttributeUnknownServerErrorException(AttributeErrorMessages.UNKNOWNERROR.getMessage()+exc.getMessage());
-        }
+            log.info("Attribute Record found for the Attribute Id : {}. Returning the Attribute Object : {}",attributeId,attr);
+            return AttributeMapper.convertToDto(attr);
     }
 
     @Override
     public List<AttributeDto> getAttributeList() {
+        log.info("Initialize the  process of fetching All Attribute Details from the Database.");
+        List<Attribute> attributeList = attributeRepo.findAll();
+        if(attributeList.isEmpty()){
+            log.error(AttributeErrorMessages.NORECORDSFOUND.getMessage());
+            throw new AttributeNotFoundException(AttributeErrorMessages.NORECORDSFOUND.getMessage());
+        }
+        log.info("Successfully fetched All Attribute Details from the Database.");
         try{
-            log.info("Initialize the  process of fetching All Attribute Details from the Database.");
-            List<Attribute> attributeList = attributeRepo.findAll();
-            if(attributeList.isEmpty()){
-                log.error(AttributeErrorMessages.NORECORDSFOUND.getMessage());
-                throw new AttributeNotFoundException(AttributeErrorMessages.NORECORDSFOUND.getMessage());
-            }
-            log.info("Successfully fetched All Attribute Details from the Database.");
             log.info("Initialize the process of Converting List<Attribute> to List<AttributeDto>  list:");
             var attributeDtos = new ArrayList<AttributeDto>();
             for(Attribute a:attributeList){
@@ -125,13 +114,13 @@ public final class AttributeServiceImpl implements AttributeService {
 
     @Override
     public void deleteAttribute(Long attributeId) {
+        log.info("Initialize the  process of fetching Attribute Details by Attribute Id: {}",attributeId);
+        Attribute attr= attributeRepo.findById(attributeId).orElseThrow(()->{
+            log.error(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+attributeId);
+            throw new AttributeNotFoundException(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+attributeId+". Please provide the correct Attribute Id to Delete the Attribute.");
+        });
+        log.info("Successfully fetched Attribute details for Attribute ID: {}", attributeId);
         try{
-            log.info("Initialize the  process of fetching Attribute Details by Attribute Id: {}",attributeId);
-            Attribute attr= attributeRepo.findById(attributeId).orElseThrow(()->{
-                log.error(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+attributeId);
-                throw new AttributeNotFoundException(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+attributeId+". Please provide the correct Attribute Id to Delete the Attribute.");
-            });
-            log.info("Successfully fetched Attribute details for Attribute ID: {}", attributeId);
             log.info("Attribute Record found for the Attribute Id : {}. Deleting the Attribute Object : {}",attributeId,attr);
             attributeRepo.delete(attr);
             log.info("Attribute Record :{} Successfully deleted  for the Attribute Id : {}.",attr,attributeId);

@@ -17,11 +17,11 @@ public class Attribute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "attribute_id")
-    private  Long attributeId;
+    private  int attributeId;
     private String type;
     private String value;
     private String name;
-    private Boolean active;
+    private boolean active;
 
     @ManyToMany(mappedBy = "attributeList", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Category> groupList;
