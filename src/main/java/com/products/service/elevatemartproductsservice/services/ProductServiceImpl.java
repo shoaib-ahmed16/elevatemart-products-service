@@ -25,8 +25,8 @@ public final class ProductServiceImpl implements ProductService {
             productRepo.save(product);
             log.info("The product is successfully created and saved in the database.");
         } catch (Exception exc) {
-            log.error(ProductErrorMessages.UNKNOWNERROR.getMessage());
-            throw new ProductUnknownServerErrorException(ProductErrorMessages.UNKNOWNERROR.getMessage());
+            log.error(ProductErrorMessages.UNKNOWNERROR.getMessage()+exc.getMessage());
+            throw new ProductUnknownServerErrorException(ProductErrorMessages.UNKNOWNERROR.getMessage()+exc.getMessage());
         }
     }
 
@@ -83,10 +83,10 @@ public final class ProductServiceImpl implements ProductService {
                         throw new ProductNotFoundException(ProductErrorMessages.NOTFOUNDBYSKU.getMessage() + product.getSku());
                     });
             log.info("Updated Product Object field data and saved changes to the database.");
-            prod.setCategoryList(product.getCategoryList());
+            prod.setCategories(product.getCategories());
             prod.setName(product.getName());
             prod.setIsTaxable(product.getIsActive());
-            prod.setTaxList(product.getTaxList());
+            prod.setTaxes(product.getTaxes());
             prod.setType(product.getType());
             productRepo.save(prod);
             log.info("Saved updated changes to the Product Object field in the database.");

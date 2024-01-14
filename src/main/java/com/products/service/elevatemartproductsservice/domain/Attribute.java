@@ -1,5 +1,6 @@
 package com.products.service.elevatemartproductsservice.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,10 +21,22 @@ public class Attribute {
     private  int attributeId;
     private String type;
     private String value;
+    @Column(unique = true)
     private String name;
     private boolean active;
 
-    @ManyToMany(mappedBy = "attributeList", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Category> groupList;
+    @ManyToMany(mappedBy = "attributes", cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Category> categories;
 
+    @Override
+    public String toString() {
+        return "Attribute{" +
+                "id=" + attributeId +
+                ", name='" + name + '\'' +
+                ", active=" + active +
+                ", type='" + type + '\'' +
+                ", value='" + value + '\'' +
+                '}';
+    }
 }

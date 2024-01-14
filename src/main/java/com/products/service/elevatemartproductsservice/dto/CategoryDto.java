@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -14,9 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 public class CategoryDto {
 
-    private Long groupId;
+    private Long categoryId;
 
-    private List<Attribute> attributeList;
+    private List<Attribute> attributes;
 
     private Boolean isActive;
 

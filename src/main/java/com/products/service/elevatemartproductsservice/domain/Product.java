@@ -2,10 +2,7 @@ package com.products.service.elevatemartproductsservice.domain;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -20,24 +17,27 @@ public class Product {
     @Column(name = "product_id")
     private  Long productId;
 
+    @Column(unique = true)
     private String sku;
 
-    private String Name;
+    private String name;
     private String type;
     private Boolean isTaxable;
     private Double price;
     private String imageUrl;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(name = "product_tax",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "tax_id"))
-    private List<Tax> taxList;
+    private List<Tax> taxes;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "product_category",
+    @ManyToMany
+    @JoinTable(
+            name = "product_categories",
             joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private List<Category> categoryList;
+            inverseJoinColumns = @JoinColumn(name ="category_id")
+    )
+    private List<Category> categories;
     private Long quantities;
     private Long thresholdQuantities;
     private Boolean isActive;

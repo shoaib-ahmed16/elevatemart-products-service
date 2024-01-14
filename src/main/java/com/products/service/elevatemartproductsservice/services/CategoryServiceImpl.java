@@ -43,9 +43,8 @@ public final class CategoryServiceImpl implements CategoryService {
                         log.error(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+category.getCategoryId());
                         throw new CategoryNotFoundException(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+category.getCategoryId());
                     });
-            grp.setProductList(category.getProductList());
             grp.setName(category.getName());
-            grp.setAttributeList(category.getAttributeList());
+            grp.setAttributes(category.getAttributes());
             categoryRepo.save(grp);
             log.info("category fields is successfully updated and saved in the database :{}",grp);
         }

@@ -1,5 +1,6 @@
 package com.products.service.elevatemartproductsservice.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,16 +21,20 @@ public class Category {
     @Column(name = "category_id")
     private Long categoryId;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "category_attribute",
+    @ManyToMany
+    @JoinTable(
+            name = "category_attribute",
             joinColumns = @JoinColumn(name = "category_id"),
-            inverseJoinColumns = @JoinColumn(name = "attribute_id"))
-    private List<Attribute> attributeList;
+            inverseJoinColumns = @JoinColumn(name ="attribute_id")
+    )
+    private List<Attribute> attributes;
 
-    @ManyToMany(mappedBy = "categoryList", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Product> productList;
+    @ManyToMany(mappedBy = "categories", cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Product> products;
     private Boolean isActive;
 
+    @Column(unique = true)
     private String name;
 
     public void setName(String name) {
@@ -51,5 +56,12 @@ public class Category {
         }
         return  new String(sb);
     }
-
+    @Override
+    public String toString() {
+        return "Category{" +
+                "categoryId=" + categoryId +
+                ", isActive=" + isActive +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

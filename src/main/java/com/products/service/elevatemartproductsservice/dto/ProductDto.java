@@ -16,12 +16,12 @@ import java.util.List;
 public class ProductDto {
     private  Long productId;
     private String sku;
-    private String Name;
-    private String Type;
+    private String name;
+    private String type;
     private Boolean isTaxable;
     private String imageUrl;
-    private List<Tax> taxList;
-    private List<Category> groupList;
+    private List<Tax> taxes;
+    private List<Category> categories;
     private Long quantities;
     private Long thresholdQuantities;
     private Boolean isActive;

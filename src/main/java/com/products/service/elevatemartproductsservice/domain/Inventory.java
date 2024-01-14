@@ -1,9 +1,6 @@
 package com.products.service.elevatemartproductsservice.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,11 +12,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 public class Inventory {
-    //todo we will not use at this moments
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long inventoryId;
 
+    @Column(unique = true)
+    private String sourceCode;
+
+    @Column(unique = true)
+    private String invetoryName;
     private String state;
     private String country;
     private String countryCode;
