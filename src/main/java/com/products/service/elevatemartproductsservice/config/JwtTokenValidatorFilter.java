@@ -1,5 +1,10 @@
 package com.products.service.elevatemartproductsservice.config;
 
+import com.products.service.elevatemartproductsservice.domain.enums.Constants;
+import com.products.service.elevatemartproductsservice.exception.InvalidTokenIssuer;
+import com.products.service.elevatemartproductsservice.exception.InvalidTokenSubject;
+import com.products.service.elevatemartproductsservice.exception.JwtInValidToken;
+import com.products.service.elevatemartproductsservice.exception.TokenExpired;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -18,7 +23,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.crypto.SecretKey;
+import javax.xml.catalog.Catalog;
 import java.io.IOException;
+import java.util.Date;
+import java.util.Objects;
 
 @Slf4j
 @Component
@@ -36,26 +44,44 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
     public String jwtSubject;
 
 
+    @Value("${jwt.security.token.earlierBefore}")
+    private Long earlierBefore;
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
 
-        String header = req.getHeader("Authorization");
-        String username = null;
-        String authToken = null;
-        String authorities;
-        if (header != null && header.startsWith("Bearer ")) {
-            authToken = header.split(" ")[1];
+        String header = req.getHeader(Constants.AUTHORIZATION.getValue());
+        if (header != null && header.startsWith(Constants.TOKEN_PREFIX.getValue())) {
+           String authToken = header.split(" ")[1];
             try {
                 SecretKey key = Keys.hmacShaKeyFor(JWT_SECRET_KEY.getBytes());
                 Claims claims=getClaims(key,authToken);
-                username =String.valueOf(claims.get("username"));
-                authorities=String.valueOf(claims.get("authorities"));
-                String issuer = claims.getIssuer();
-                String subject = claims.getSubject();
+                if(Objects.isNull(claims)){
+                    log.error("Invalid Claim or null value for claim. Not a valid Generated Token");
+                    throw new JwtInValidToken("Invalid Claim or null value for claim. Not a valid Generated Token.");
+                }
+                String username =String.valueOf(claims.get(Constants.USERNAME.getValue()));
+                String authorities=String.valueOf(claims.get(Constants.AUTHORITIES.getValue()));
+                if(!claims.getIssuer().equals(jwtIssuer)){
+                    log.error("This Token is not issued By Elevate Mart Security Service");
+                    throw new InvalidTokenIssuer("This Token is not issued By Elevate Mart Security Service");
+                }
+                if(!claims.getSubject().equals(jwtSubject)){
+                    log.error("This Token is not issued By Elevate Mart Security Service");
+                    throw new InvalidTokenSubject("This Token is not issued By Elevate Mart Security Service");
+                }
+                if(claims.getExpiration().before(new Date(new Date().getTime()-earlierBefore))){
+                    log.error("This Token is expired. Please Login again!");
+                    throw new TokenExpired("This Token is expired. Please Login again!");
+                }
                 Authentication auth= new UsernamePasswordAuthenticationToken(username,null, AuthorityUtils.commaSeparatedStringToAuthorityList(authorities));
                 SecurityContextHolder.getContext().setAuthentication(auth);
-            } catch(Exception e){
+            }catch(JwtInValidToken jwt) {
+                throw new JwtInValidToken(jwt.getMessage());
+            }catch (InvalidTokenIssuer | TokenExpired | InvalidTokenSubject inti){
+                throw new InvalidTokenIssuer(inti.getMessage());
+            } catch (Exception e){
                 log.error("Authentication Failed. Username or Password not valid. Exception : {}",e.getMessage());
                 throw new RuntimeException("Authentication Failed. Username or Password not valid. Exception: "+e.getMessage());
             }

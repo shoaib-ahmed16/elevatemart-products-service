@@ -137,6 +137,51 @@ public final class ElevateMartExceptionController {
         productErrMsg.setStatusDescription(HttpStatus.INTERNAL_SERVER_ERROR.name());
         return new  ResponseEntity<ProductErrorMessage>(productErrMsg,HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler({InvalidTokenIssuer.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ProductErrorMessage> tokenValidationExceptionHandler(InvalidTokenIssuer invalid, HttpServletRequest handler){
+        ProductErrorMessage productErrMsg =getProductErrMsgObj();
+        productErrMsg.setMessage(invalid.getMessage());
+        productErrMsg.setUrlPath(handler.getRequestURI());
+        productErrMsg.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+        productErrMsg.setStatusDescription(HttpStatus.BAD_REQUEST.name());
+        return new  ResponseEntity<ProductErrorMessage>(productErrMsg,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({InvalidTokenSubject.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ProductErrorMessage> tokenValidationExceptionHandler(InvalidTokenSubject invalid, HttpServletRequest handler){
+        ProductErrorMessage productErrMsg =getProductErrMsgObj();
+        productErrMsg.setMessage(invalid.getMessage());
+        productErrMsg.setUrlPath(handler.getRequestURI());
+        productErrMsg.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+        productErrMsg.setStatusDescription(HttpStatus.BAD_REQUEST.name());
+        return new  ResponseEntity<ProductErrorMessage>(productErrMsg,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({JwtInValidToken.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ProductErrorMessage> tokenValidationExceptionHandler(JwtInValidToken invalid, HttpServletRequest handler){
+        ProductErrorMessage productErrMsg =getProductErrMsgObj();
+        productErrMsg.setMessage(invalid.getMessage());
+        productErrMsg.setUrlPath(handler.getRequestURI());
+        productErrMsg.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+        productErrMsg.setStatusDescription(HttpStatus.BAD_REQUEST.name());
+        return new  ResponseEntity<ProductErrorMessage>(productErrMsg,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({TokenExpired.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ProductErrorMessage> tokenValidationExceptionHandler(TokenExpired invalid, HttpServletRequest handler){
+        ProductErrorMessage productErrMsg =getProductErrMsgObj();
+        productErrMsg.setMessage(invalid.getMessage());
+        productErrMsg.setUrlPath(handler.getRequestURI());
+        productErrMsg.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+        productErrMsg.setStatusDescription(HttpStatus.BAD_REQUEST.name());
+        return new  ResponseEntity<ProductErrorMessage>(productErrMsg,HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler({Exception.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<ProductErrorMessage> exceptionHandlerUnknown(Exception tusee, HttpServletRequest handler){

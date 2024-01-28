@@ -30,5 +30,6 @@ jwt:
   security:
     token:
       secret_key: abMcdefgIhijk4lmnoXpqrsZtuvwxyzYafeA
-      issuer: ashoaib@gmail.com
+      issuer: ashoaib.security@gmail.com
       subject: emartSalesPlatform@gmail.com
+      earlierBefore: 300
