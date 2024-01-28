@@ -122,14 +122,14 @@ public final class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> getProducts() {
+        log.info("Initialize the  process of fetching All category Details from the Database.");
+        List<Product> products = productRepo.findAll();
+        if(products.isEmpty()){
+            log.error(ProductErrorMessages.NORECORDSFOUND.getMessage());
+            throw new ProductNotFoundException(ProductErrorMessages.NORECORDSFOUND.getMessage());
+        }
+        log.info("Successfully fetched All Product Details from the Database.");
         try{
-            log.info("Initialize the  process of fetching All category Details from the Database.");
-            List<Product> products = productRepo.findAll();
-            if(products.isEmpty()){
-                log.error(ProductErrorMessages.NORECORDSFOUND.getMessage());
-                throw new ProductNotFoundException(ProductErrorMessages.NORECORDSFOUND.getMessage());
-            }
-            log.info("Successfully fetched All Product Details from the Database.");
             log.info("Initialize the process of Converting List<Product> to List<ProductDto>  list:");
             var productDtoList = new ArrayList<ProductDto>();
             for(Product a:products){
