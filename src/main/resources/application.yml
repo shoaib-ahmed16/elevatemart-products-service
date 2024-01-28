@@ -25,3 +25,10 @@ spring:
 
 file:
   upload-dir: src/main/resources/fileImages
+
+jwt:
+  security:
+    token:
+      secret_key: abMcdefgIhijk4lmnoXpqrsZtuvwxyzYafeA
+      issuer: ashoaib@gmail.com
+      subject: emartSalesPlatform@gmail.com

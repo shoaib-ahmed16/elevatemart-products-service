@@ -9,20 +9,32 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;
 
 @Slf4j
+@Component
 public class JwtTokenValidatorFilter extends OncePerRequestFilter {
 
-    //    @Value("${jwt.security.token.secret_key}")
-    private final String JWT_SECRET_KEY ="abMcdefgIhijk4lmnoXpqrsZtuvwxyzYafeA";
+
+    @Value("${jwt.security.token.secret_key}")
+    public String JWT_SECRET_KEY;
+
+
+    @Value("${jwt.security.token.issuer}")
+    public String jwtIssuer;
+
+    @Value("${jwt.security.token.subject}")
+    public String jwtSubject;
+
 
 
     @Override
@@ -39,6 +51,8 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
                 Claims claims=getClaims(key,authToken);
                 username =String.valueOf(claims.get("username"));
                 authorities=String.valueOf(claims.get("authorities"));
+                String issuer = claims.getIssuer();
+                String subject = claims.getSubject();
                 Authentication auth= new UsernamePasswordAuthenticationToken(username,null, AuthorityUtils.commaSeparatedStringToAuthorityList(authorities));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             } catch(Exception e){

@@ -1,6 +1,7 @@
 package com.products.service.elevatemartproductsservice.config;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -69,6 +70,9 @@ public class SecurityConfig {
             "api/v1/product/delete",
             "api/v1/product/deleteMultiple"
     };
+
+    @Autowired
+    private JwtTokenValidatorFilter jwtTokenValidatorFilter;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         RequestCache nullRequestCache = new NullRequestCache();
@@ -103,7 +107,7 @@ public class SecurityConfig {
                                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new AuthorisedUserLoggingFilter(),BasicAuthenticationFilter.class)
-                .addFilterBefore(new JwtTokenValidatorFilter(),BasicAuthenticationFilter.class)
+                .addFilterBefore(jwtTokenValidatorFilter,BasicAuthenticationFilter.class)
                 .requestCache((cache)->cache.
                         requestCache(nullRequestCache))
                 .formLogin(Customizer.withDefaults())
