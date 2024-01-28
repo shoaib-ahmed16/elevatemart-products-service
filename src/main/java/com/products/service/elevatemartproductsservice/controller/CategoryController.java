@@ -74,12 +74,12 @@ public class CategoryController {
     }
 
     @GetMapping("/fetchAll")
-    public ResponseSuccess fetchAllCategory(){
+    public ResponseSuccess fetchCategories(){
         log.info("Received a All category Detail Fetch Request Call. Initiating All category Fetching Process.");
         return  new ResponseSuccess(Operation.FETCHALL.getMessage(),Operation.CATEGORY.getType()+Operation.FETCHALL.getOperation(),Operation.FETCHALL.getStatusCode(),categoryService.getAllCategorys());
     }
 
-    @DeleteMapping("/deleteById")
+    @DeleteMapping("/delete")
     public ResponseSuccess deleteCategoryById(@RequestParam("id") Long categoryId){
         log.info("Received Request Call to delete the category by Id: {}. Initiating Deleting category record process.",categoryId);
         if(categoryId!=0){
@@ -90,7 +90,7 @@ public class CategoryController {
         return  new ResponseSuccess(Operation.DELETEBYID.getMessage(),Operation.CATEGORY.getType()+Operation.DELETEBYID.getOperation(),Operation.DELETEBYID.getStatusCode());
     }
 
-    @DeleteMapping("/deleteMulitple")
+    @DeleteMapping("/deleteMultiple")
     public ResponseSuccess deleteMultipleCategory(@RequestBody List<Long> categoryIds){
         log.info("Received Request Call to delete the category by Ids: {}. Initiating Deleting category record process.",categoryIds);
         if(Objects.isNull(categoryIds) && categoryIds.isEmpty()){

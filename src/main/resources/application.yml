@@ -4,7 +4,7 @@
 #      springframework: debug
 
 server:
-  port: 8888
+  port: 8800
   servlet:
     context-path: /product-service-elevatemart
   

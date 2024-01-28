@@ -70,12 +70,12 @@ public class AttributeController {
 
     @GetMapping("/fetchAll")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseSuccess fetchAllAttribute(){
+    public ResponseSuccess fetchAllAttributes(){
         log.info("Received a All Attribute Detail Fetch Request Call. Initiating All Attribute Fetching Process");
         return  new ResponseSuccess(Operation.FETCHALL.getMessage(),Operation.ATTRIBUTE.getType()+Operation.FETCHALL.getOperation(),Operation.FETCHALL.getStatusCode(),attributeService.getAttributeList());
     }
 
-    @DeleteMapping("/deleteById")
+    @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseSuccess deleteAttributeById(@RequestParam("id") Long attributeId){
         log.info("Received Request Call to delete the Attribute by Id: {}. Initiating Deleting Attribute record process.",attributeId);
@@ -86,7 +86,7 @@ public class AttributeController {
         attributeService.deleteAttribute(attributeId);
         return  new ResponseSuccess(Operation.DELETEBYID.getMessage(),Operation.ATTRIBUTE.getType()+Operation.DELETEBYID.getOperation(),Operation.DELETEBYID.getStatusCode());
     }
-    @DeleteMapping("/deleteMulitple")
+    @DeleteMapping("/deleteMultiple")
     @ResponseStatus(HttpStatus.OK)
     public ResponseSuccess deleteMultipleAttribute(@RequestBody List<Long> attributeIds){
         log.info("Received Request Call to delete the Attribute by Ids: {}. Initiating Deleting Attribute record process.",attributeIds);

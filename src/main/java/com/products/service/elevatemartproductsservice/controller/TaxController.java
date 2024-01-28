@@ -76,9 +76,22 @@ public class TaxController {
     }
 
     @GetMapping("/fetchAll")
-    public ResponseSuccess fetchAllTax(){
+    public ResponseSuccess fetchTaxes(){
         log.info("Received a All Tax Detail Fetch Request Call. Initiating All Tax Fetching Process.");
         return  new ResponseSuccess(Operation.FETCHALL.getMessage(),Operation.TAX.getType()+Operation.FETCHALL.getOperation(),Operation.FETCHALL.getStatusCode(),taxService.getAllTax());
     }
+
+    @DeleteMapping("/delete")
+    public ResponseSuccess deleteCategoryById(@RequestParam("id") Long taxId){
+        log.info("Received Request Call to delete the Tax by Id: {}. Initiating Deleting tax record process.",taxId);
+        if(taxId!=0){
+            log.error("Failed to process request: Received an empty tax Id :{}.",taxId);
+            throw new CategoryNullObjectException("categoryId is either not valid or ");
+        }
+        taxService.deleteTaxById(taxId);
+        return  new ResponseSuccess(Operation.DELETEBYID.getMessage(),Operation.TAX.getType()+Operation.DELETEBYID.getOperation(),Operation.DELETEBYID.getStatusCode());
+    }
+
+
 
 }
