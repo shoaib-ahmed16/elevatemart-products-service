@@ -40,12 +40,12 @@ public final class TaxServiceImpl implements TaxService {
     @Override
     public void updateTaxPercentage(Long taxId, Double percentage) {
         log.info("Initialize the  process of updating Tax percentage.");
+        Tax tax= taxRepo.findById(taxId)
+                .orElseThrow(()->{
+                    log.error(TaxErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
+                    throw new TaxNotFoundException(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
+                });
         try{
-            Tax tax= taxRepo.findById(taxId)
-                    .orElseThrow(()->{
-                        log.error(TaxErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
-                        throw new TaxNotFoundException(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
-                    });
             tax.setPercent(percentage);
             taxRepo.save(tax);
             log.info("Tax Percentage  is successfully updated and saved in the database :{}",tax);
@@ -59,12 +59,12 @@ public final class TaxServiceImpl implements TaxService {
     @Override
     public void updateTaxCode(Long taxId, String code) {
         log.info("Initialize the  process of updating Tax code.");
+        Tax tax= taxRepo.findById(taxId)
+                .orElseThrow(()->{
+                    log.error(TaxErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
+                    throw new TaxNotFoundException(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
+                });
         try{
-            Tax tax= taxRepo.findById(taxId)
-                    .orElseThrow(()->{
-                        log.error(TaxErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
-                        throw new TaxNotFoundException(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
-                    });
             tax.setCode(code);
             taxRepo.save(tax);
             log.info("Tax Code is successfully updated and saved in the database :{}",tax);
@@ -78,12 +78,12 @@ public final class TaxServiceImpl implements TaxService {
     @Override
     public void updateTax(Tax updateTax, Long taxId) {
         log.info("Initialize the  process of updating Tax details.");
+        Tax tax= taxRepo.findById(taxId)
+                .orElseThrow(()->{
+                    log.error(TaxErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
+                    throw new TaxNotFoundException(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
+                });
         try{
-            Tax tax= taxRepo.findById(taxId)
-                    .orElseThrow(()->{
-                        log.error(TaxErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
-                        throw new TaxNotFoundException(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
-                    });
             tax.setType(updateTax.getType());
             tax.setPercent(updateTax.getPercent());
             tax.setDisplayName(updateTax.getDisplayName());
@@ -100,13 +100,13 @@ public final class TaxServiceImpl implements TaxService {
 
     @Override
     public TaxDto getTaxById(Long taxId) {
+        log.info("Initialize the  process of fetching Group Details by Attribute Id: {}",taxId);
+        Tax tax= taxRepo.findById(taxId)
+                .orElseThrow(()->{
+                    log.error(TaxErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
+                    throw new TaxNotFoundException(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
+                });
         try{
-            log.info("Initialize the  process of fetching Group Details by Attribute Id: {}",taxId);
-            Tax tax= taxRepo.findById(taxId)
-                    .orElseThrow(()->{
-                        log.error(TaxErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
-                        throw new TaxNotFoundException(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
-                    });
             log.info("Successfully fetch Tax details for Tax ID: {}", taxId);
             log.info("Tax Record found for the Tax Id : {}. Returning the Tax Object : {}",taxId,tax);
             return TaxMapper.convertToDto(tax);
@@ -119,14 +119,14 @@ public final class TaxServiceImpl implements TaxService {
 
     @Override
     public List<TaxDto> getAllTax() {
+        log.info("Initialize the  process of fetching All Tax Details from the Database.");
+        List<Tax> taxList = taxRepo.findAll();
+        if(taxList.isEmpty()){
+            log.error(TaxErrorMessages.NORECORDSFOUND.getMessage());
+            throw new TaxNotFoundException(TaxErrorMessages.NORECORDSFOUND.getMessage());
+        }
+        log.info("Successfully fetched All Tax Details from the Database.");
         try{
-            log.info("Initialize the  process of fetching All Tax Details from the Database.");
-            List<Tax> taxList = taxRepo.findAll();
-            if(taxList.isEmpty()){
-                log.error(TaxErrorMessages.NORECORDSFOUND.getMessage());
-                throw new TaxNotFoundException(TaxErrorMessages.NORECORDSFOUND.getMessage());
-            }
-            log.info("Successfully fetched All Tax Details from the Database.");
             log.info("Initialize the process of Converting List<Tax> to List<TaxDto>  list:");
             var taxDtos = new ArrayList<TaxDto>();
             for(Tax a:taxList){
@@ -144,13 +144,13 @@ public final class TaxServiceImpl implements TaxService {
 
     @Override
     public void deleteTaxById(Long taxId) {
+        log.info("Initialize the  process of fetching Tax Details by Tax Id: {}",taxId);
+        Tax tax= taxRepo.findById(taxId).orElseThrow(()->{
+            log.error(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
+            throw new CategoryNotFoundException(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+taxId+". Please provide the correct Group Id to Delete the Group.");
+        });
+        log.info("Successfully fetched Tax details for Tax ID: {}", taxId);
         try{
-            log.info("Initialize the  process of fetching Tax Details by Tax Id: {}",taxId);
-            Tax tax= taxRepo.findById(taxId).orElseThrow(()->{
-                log.error(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+taxId);
-                throw new CategoryNotFoundException(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+taxId+". Please provide the correct Group Id to Delete the Group.");
-            });
-            log.info("Successfully fetched Tax details for Tax ID: {}", taxId);
             log.info("Group Record found for the Tax Id : {}. Deleting the Tax Object : {}",taxId,tax);
             taxRepo.delete(tax);
             log.info("Tax Record :{} Successfully deleted  for the tax Id : {}.",tax,taxId);

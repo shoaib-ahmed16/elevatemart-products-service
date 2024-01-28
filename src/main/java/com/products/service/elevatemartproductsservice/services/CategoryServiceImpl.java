@@ -37,12 +37,12 @@ public final class CategoryServiceImpl implements CategoryService {
     @Override
     public void updateCategory(Long categoryId, Category  category) {
         log.info("Initialize the  process of updating category.");
+        Category grp= categoryRepo.findById(categoryId)
+                .orElseThrow(()->{
+                    log.error(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+category.getCategoryId());
+                    throw new CategoryNotFoundException(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+category.getCategoryId());
+                });
         try{
-            Category grp= categoryRepo.findById(categoryId)
-                    .orElseThrow(()->{
-                        log.error(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+category.getCategoryId());
-                        throw new CategoryNotFoundException(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+category.getCategoryId());
-                    });
             grp.setName(category.getName());
             grp.setAttributes(category.getAttributes());
             categoryRepo.save(grp);
@@ -57,14 +57,14 @@ public final class CategoryServiceImpl implements CategoryService {
     @Override
     public void updateCategoryActiveStatus(Long categoryId, Boolean status) {
         log.info("Initialize the  process of updating category Status.");
+        log.info("Initialize the  process of fetching category Details by category Id: {}",categoryId);
+        Category grp= categoryRepo.findById(categoryId)
+                .orElseThrow(()->{
+                    log.error(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+categoryId);
+                    throw new CategoryNotFoundException(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+categoryId);
+                });
+        log.info("Successfully fetched category details for category ID: {}", categoryId);
         try{
-            log.info("Initialize the  process of fetching category Details by category Id: {}",categoryId);
-            Category grp= categoryRepo.findById(categoryId)
-                    .orElseThrow(()->{
-                        log.error(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+categoryId);
-                        throw new CategoryNotFoundException(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+categoryId);
-                    });
-            log.info("Successfully fetched category details for category ID: {}", categoryId);
             log.info("category status field updating from :{} to : {} and saved in the database",grp.getIsActive(),status);
             grp.setIsActive(status);
             categoryRepo.save(grp);
@@ -78,13 +78,13 @@ public final class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto getCategoryById(Long categoryId) {
+        log.info("Initialize the  process of fetching category Details by Attribute Id: {}",categoryId);
+        Category grp= categoryRepo.findById(categoryId)
+                .orElseThrow(()->{
+                    log.error(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+categoryId);
+                    throw new CategoryNotFoundException(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+categoryId);
+                });
         try{
-            log.info("Initialize the  process of fetching category Details by Attribute Id: {}",categoryId);
-            Category grp= categoryRepo.findById(categoryId)
-                    .orElseThrow(()->{
-                        log.error(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+categoryId);
-                        throw new CategoryNotFoundException(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+categoryId);
-                    });
             log.info("Successfully fetch category details for category ID: {}", categoryId);
             log.info("category Record found for the category Id : {}. Returning the category Object : {}",categoryId,grp);
             return CategoryMapper.convertToDto(grp);
@@ -97,14 +97,14 @@ public final class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDto> getAllCategorys() {
+        log.info("Initialize the  process of fetching All category Details from the Database.");
+        List<Category> categoryList = categoryRepo.findAll();
+        if(categoryList.isEmpty()){
+            log.error(CategoryErrorMessages.NORECORDSFOUND.getMessage());
+            throw new CategoryNotFoundException(CategoryErrorMessages.NORECORDSFOUND.getMessage());
+        }
+        log.info("Successfully fetched All category Details from the Database.");
         try{
-            log.info("Initialize the  process of fetching All category Details from the Database.");
-            List<Category> categoryList = categoryRepo.findAll();
-            if(categoryList.isEmpty()){
-                log.error(CategoryErrorMessages.NORECORDSFOUND.getMessage());
-                throw new CategoryNotFoundException(CategoryErrorMessages.NORECORDSFOUND.getMessage());
-            }
-            log.info("Successfully fetched All category Details from the Database.");
             log.info("Initialize the process of Converting List<Category> to List<CategoryDto>  list:");
             var categoryDtoList = new ArrayList<CategoryDto>();
             for(Category a:categoryList){
@@ -143,13 +143,13 @@ public final class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategoryById(Long categoryId) {
+        log.info("Initialize the  process of fetching category Details by category Id: {}",categoryId);
+        Category grp= categoryRepo.findById(categoryId).orElseThrow(()->{
+            log.error(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+categoryId);
+            throw new CategoryNotFoundException(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+categoryId+". Please provide the correct category Id to Delete the category.");
+        });
+        log.info("Successfully fetched category details for category ID: {}", categoryId);
         try{
-            log.info("Initialize the  process of fetching category Details by category Id: {}",categoryId);
-            Category grp= categoryRepo.findById(categoryId).orElseThrow(()->{
-                log.error(CategoryErrorMessages.NOTFOUNDBYID.getMessage()+categoryId);
-                throw new CategoryNotFoundException(AttributeErrorMessages.NOTFOUNDBYID.getMessage()+categoryId+". Please provide the correct category Id to Delete the category.");
-            });
-            log.info("Successfully fetched category details for category ID: {}", categoryId);
             log.info("category Record found for the category Id : {}. Deleting the category Object : {}",categoryId,grp);
             categoryRepo.delete(grp);
             log.info("category Record :{} Successfully deleted  for the category Id : {}.",grp,categoryId);

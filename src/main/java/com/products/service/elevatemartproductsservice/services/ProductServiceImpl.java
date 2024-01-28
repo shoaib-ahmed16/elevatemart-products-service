@@ -42,13 +42,13 @@ public final class ProductServiceImpl implements ProductService {
 
     @Override
     public void updateProductSku(Long productId, String updatedSku) {
+        log.info("Initializing product sku updating.");
+        Product prod = productRepo.findById(productId)
+                .orElseThrow(() -> {
+                    log.error(ProductErrorMessages.NOTFOUNDBYID.getMessage() + productId);
+                    throw new ProductNotFoundException(ProductErrorMessages.NOTFOUNDBYID.getMessage() + productId);
+                });
         try {
-            log.info("Initializing product sku updating.");
-            Product prod = productRepo.findById(productId)
-                    .orElseThrow(() -> {
-                        log.error(ProductErrorMessages.NOTFOUNDBYID.getMessage() + productId);
-                        throw new ProductNotFoundException(ProductErrorMessages.NOTFOUNDBYID.getMessage() + productId);
-                    });
             log.info("Product Sku is updating from :{} to : {}.", prod.getSku(), updatedSku);
             prod.setSku(updatedSku);
             productRepo.save(prod);
@@ -61,13 +61,13 @@ public final class ProductServiceImpl implements ProductService {
 
     @Override
     public void updateProductQuantities(String sku, Long quantities) {
+        log.info("Initializing product quantities updating.");
+        Product prod = productRepo.findBySku(sku)
+                .orElseThrow(() -> {
+                    log.error(ProductErrorMessages.NOTFOUNDBYSKU.getMessage() + sku);
+                    throw new ProductNotFoundException(ProductErrorMessages.NOTFOUNDBYSKU.getMessage() + sku);
+                });
         try {
-            log.info("Initializing product quantities updating.");
-            Product prod = productRepo.findBySku(sku)
-                    .orElseThrow(() -> {
-                        log.error(ProductErrorMessages.NOTFOUNDBYSKU.getMessage() + sku);
-                        throw new ProductNotFoundException(ProductErrorMessages.NOTFOUNDBYSKU.getMessage() + sku);
-                    });
             log.info("Product Quantities is updating from :{} to : {}.", prod.getQuantities(), prod.getQuantities() + quantities);
             prod.setQuantities(prod.getQuantities() + quantities);
             productRepo.save(prod);
@@ -85,13 +85,13 @@ public final class ProductServiceImpl implements ProductService {
 
     @Override
     public void updateProduct(Product product, String sku) {
+        log.info("Initializing product updating.");
+        Product prod = productRepo.findBySku(sku)
+                .orElseThrow(() -> {
+                    log.error(ProductErrorMessages.NOTFOUNDBYSKU.getMessage() + product.getSku());
+                    throw new ProductNotFoundException(ProductErrorMessages.NOTFOUNDBYSKU.getMessage() + product.getSku());
+                });
         try {
-            log.info("Initializing product updating.");
-            Product prod = productRepo.findBySku(sku)
-                    .orElseThrow(() -> {
-                        log.error(ProductErrorMessages.NOTFOUNDBYSKU.getMessage() + product.getSku());
-                        throw new ProductNotFoundException(ProductErrorMessages.NOTFOUNDBYSKU.getMessage() + product.getSku());
-                    });
             log.info("Updated Product Object field data and saved changes to the database.");
             prod.setCategories(product.getCategories());
             prod.setName(product.getName());
@@ -109,7 +109,6 @@ public final class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto getProductBySku(String sku) {
-        try {
             log.info("Initializing product fetching process with Product Sku: {}.", sku);
             Product prod = productRepo.findBySku(sku)
                     .orElseThrow(() -> {
@@ -119,10 +118,6 @@ public final class ProductServiceImpl implements ProductService {
             log.info("Finished database search for product with Product Sku: {}", sku);
             log.info("The product :{} is Returning.", prod);
             return ProductMapper.convertToDto(prod);
-        } catch (Exception exc) {
-            log.error(ProductErrorMessages.UNKNOWNERROR.getMessage());
-            throw new ProductUnknownServerErrorException(ProductErrorMessages.UNKNOWNERROR.getMessage());
-        }
     }
 
     @Override
