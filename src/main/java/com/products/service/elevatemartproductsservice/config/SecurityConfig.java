@@ -95,7 +95,7 @@ public class SecurityConfig {
                 })
                 .authorizeHttpRequests(authorize->
                         authorize
-                                .requestMatchers("/swagger-ui*/**","v3/api-docs/**").permitAll()
+                                .requestMatchers("/swagger-ui*/**","v3/api-docs/**","api/v1/product/{sku}").permitAll()
                                 .requestMatchers(HttpMethod.POST, authorizationRequireAdminNonIdempotentPostRequest).hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, authorizationRequireAdminNonIdempotentPutRequest).hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE,authorizationRequireAdminIdempotentRequestDelete).hasRole("ADMIN")

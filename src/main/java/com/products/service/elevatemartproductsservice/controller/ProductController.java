@@ -1,6 +1,7 @@
 package com.products.service.elevatemartproductsservice.controller;
 
 import com.products.service.elevatemartproductsservice.domain.Product;
+import com.products.service.elevatemartproductsservice.dto.ProductDto;
 import com.products.service.elevatemartproductsservice.dto.ProductImpFieldDto;
 import com.products.service.elevatemartproductsservice.exception.CategoryNullObjectException;
 import com.products.service.elevatemartproductsservice.exception.ProductNullObjectException;
@@ -10,6 +11,7 @@ import com.products.service.elevatemartproductsservice.utils.Operation;
 import com.products.service.elevatemartproductsservice.utils.ResponseSuccess;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -139,5 +141,15 @@ public class ProductController {
         }
         productService.deleteMultipleProduct(productIds);
         return  new ResponseSuccess(Operation.DELETEMULTIPLE.getMessage(),Operation.PRODUCT.getType()+Operation.DELETEMULTIPLE.getOperation(),Operation.DELETEMULTIPLE.getStatusCode());
+    }
+
+    @GetMapping("/{sku}")
+    public ResponseEntity<ProductDto> getProductBySku(@PathVariable("sku") String sku){
+        log.info("Initiating Product retrieval by SKU: {}", sku);
+        if(Objects.isNull(sku)|| sku.trim().equals("")){
+            log.error("Received an empty or null value for 'productSku' :{}. Unable to proceed with this request.",sku);
+            throw new ProductNullObjectException("ProductImpFieldDto updating");
+        }
+        return new ResponseEntity<>(productService.getProductBySku(sku), HttpStatus.OK);
     }
 }

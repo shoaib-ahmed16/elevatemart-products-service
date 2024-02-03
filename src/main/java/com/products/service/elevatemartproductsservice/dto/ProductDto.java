@@ -15,6 +15,7 @@ import java.util.List;
 @Builder
 public class ProductDto {
     private  Long productId;
+    private Double price;
     private String sku;
     private String name;
     private String type;
