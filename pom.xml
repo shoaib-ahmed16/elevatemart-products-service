@@ -12,4 +12,14 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>elevatemart-products-service</name>
 	<description>Elevate Mart Product micro-service</description>
+	<properties>
+		<eureka.netfix.clien.version>4.1.0</eureka.netfix.clien.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			<version>${eureka.netfix.clien.version}</version>
+		</dependency>
+	</dependencies>
 </project>
