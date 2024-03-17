@@ -14,7 +14,7 @@ import java.util.Objects;
 
 @Slf4j
 @RestController
-@RequestMapping("api/v1/tax")
+@RequestMapping("/api/v1/tax")
 public class TaxController {
 
     @Autowired

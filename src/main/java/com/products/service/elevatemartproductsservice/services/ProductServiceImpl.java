@@ -1,18 +1,11 @@
 package com.products.service.elevatemartproductsservice.services;
 
-import com.products.service.elevatemartproductsservice.domain.Category;
 import com.products.service.elevatemartproductsservice.domain.Product;
-import com.products.service.elevatemartproductsservice.dto.CategoryDto;
 import com.products.service.elevatemartproductsservice.dto.ProductDto;
-import com.products.service.elevatemartproductsservice.dto.mappers.CategoryMapper;
 import com.products.service.elevatemartproductsservice.dto.mappers.ProductMapper;
-import com.products.service.elevatemartproductsservice.exception.CategoryNotFoundException;
-import com.products.service.elevatemartproductsservice.exception.CategoryUnknownServerErrorException;
 import com.products.service.elevatemartproductsservice.exception.ProductNotFoundException;
 import com.products.service.elevatemartproductsservice.exception.ProductUnknownServerErrorException;
 import com.products.service.elevatemartproductsservice.repository.ProductRepository;
-import com.products.service.elevatemartproductsservice.utils.AttributeErrorMessages;
-import com.products.service.elevatemartproductsservice.utils.CategoryErrorMessages;
 import com.products.service.elevatemartproductsservice.utils.ProductErrorMessages;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

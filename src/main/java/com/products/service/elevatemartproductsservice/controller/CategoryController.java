@@ -14,7 +14,7 @@ import java.util.Objects;
 
 @Slf4j
 @RestController
-@RequestMapping("api/v1/category")
+@RequestMapping("/api/v1/category")
 public class CategoryController {
 
     @Autowired
