@@ -92,13 +92,13 @@ public class ProductController {
         return new ResponseSuccess(Operation.IMAGEUPDATE.getMessage()+prodFields.getSku(), Operation.IMAGEUPDATE.getOperation(), Operation.IMAGEUPDATE.getStatusCode());
     }
     @GetMapping("/productBySku")
-    public ResponseSuccess getProductById(@RequestParam("sku") String productSku){
+    public ResponseSuccess getProductById(@RequestParam("sku") String productSku) {
         log.info("Initiating Product retrieval by SKU: {}", productSku);
-        if(Objects.isNull(productSku)|| productSku.trim().equals("")){
-            log.error("Received an empty or null value for 'productSku' :{}. Unable to proceed with this request.",productSku);
+        if (Objects.isNull(productSku) || productSku.trim().equals("")) {
+            log.error("Received an empty or null value for 'productSku' :{}. Unable to proceed with this request.", productSku);
             throw new ProductNullObjectException("ProductImpFieldDto updating");
         }
-        return new ResponseSuccess(Operation.FOUNDBYSKU.getMessage(), Operation.FOUNDBYSKU.getOperation(), Operation.FOUNDBYSKU.getStatusCode(),productService.getProductBySku(productSku));
+        return new ResponseSuccess(Operation.FOUNDBYSKU.getMessage(), Operation.FOUNDBYSKU.getOperation(), Operation.FOUNDBYSKU.getStatusCode(), productService.getProductBySku(productSku));
     }
     @GetMapping("/fetchAll")
     public ResponseSuccess getProducts(){
@@ -144,12 +144,12 @@ public class ProductController {
     }
 
     @GetMapping("/{sku}")
-    public ResponseEntity<ProductDto> getProductBySku(@PathVariable("sku") String sku){
+    public ProductDto getProductBySku(@PathVariable("sku") String sku){
         log.info("Initiating Product retrieval by SKU: {}", sku);
         if(Objects.isNull(sku)|| sku.trim().equals("")){
             log.error("Received an empty or null value for 'productSku' :{}. Unable to proceed with this request.",sku);
             throw new ProductNullObjectException("ProductImpFieldDto updating");
         }
-        return new ResponseEntity<>(productService.getProductBySku(sku), HttpStatus.OK);
+        return productService.getProductBySku(sku);
     }
 }
