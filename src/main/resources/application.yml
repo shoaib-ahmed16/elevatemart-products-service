@@ -1,13 +1,15 @@
-#logging:
-#  level:
-#    org:
-#      springframework: debug
+logging:
+  level:
+    org:
+      springframework: debug
 server:
   port: 8800
 
 spring:
   application:
     name: product-micro-service
+  zipkin:
+    base-url: http://localhost:9411/
   datasource:
     url: jdbc:mysql://localhost:3306/elevatemart
     username: root
